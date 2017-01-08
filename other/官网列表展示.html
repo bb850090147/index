@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{padding: 0; margin: 0; list-style: none;}
+	ul{width: 510px; margin:50px auto;}
+	ul li{width:150px; height:150px; float:left; margin:10px;}
+	ul li img{width:150px; height:150px;}
+	input{ width:150px; margin:10px auto; display:block;}
+	</style>
+	<script src="move.js"></script>
+	<script>
+		window.onload=function(){
+			var oBtn=document.getElementById('btn');
+			var aLi=document.getElementsByTagName('li');
+			var aImg = document.getElementsByTagName('img');
+			//把浮动布局转化成定位布局
+			var arrPos=[];
+			for(var i=0;i<aLi.length;i++){
+				arrPos[i]={
+					left:aImg[i].offsetLeft,
+					top:aImg[i].offsetTop
+				}
+			}
+			for(var i=0;i<aLi.length;i++){
+				aImg[i].style.position='absolute';
+				aImg[i].style.left=arrPos[i].left+'px';
+				aImg[i].style.top=arrPos[i].top+'px';
+				aImg[i].style.margin=0;
+			}
+			var bOk=false;
+			oBtn.onclick=function(){
+				if(bOk)return;
+				bOk=true;
+				clearInterval(timer);
+				var n=0;
+				var timer=null;
+				timer=setInterval(function(){
+					(function(index){
+						move(aImg[n],{left:700,top:0,width:0, height:0},{fn:function(){
+						if(index==aImg.length-1){
+							//alert('over');
+							n=0;
+							timer=setInterval(function(){
+								move(aImg[n],{left:arrPos[n].left,top:arrPos[n].top,width:150,height:150});
+								n++;
+								if(n==aImg.length){
+									bOk=false;
+									clearInterval(timer);
+								}
+							},500)
+						}
+						}})
+					})(n)
+					n++;
+
+					if(n==aImg.length){
+						clearInterval(timer);
+					}
+				},500);
+			}
+		}
+	</script>
+</head>
+<body>
+	<input type="button" id="btn" value="点一点">
+	<ul>
+		<li><img src="img2/1.jpg" alt=""></li>
+		<li><img src="img2/2.jpg" alt=""></li>
+		<li><img src="img2/3.jpg" alt=""></li>
+		<li><img src="img2/4.jpg" alt=""></li>
+		<li><img src="img2/5.jpg" alt=""></li>
+		<li><img src="img2/6.jpg" alt=""></li>
+		<li><img src="img2/7.jpg" alt=""></li>
+		<li><img src="img2/8.jpg" alt=""></li>
+		<li><img src="img2/9.jpg" alt=""></li>
+	</ul>
+</body>
+</html>
